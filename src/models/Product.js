@@ -6,9 +6,26 @@ const ReviewSchema = new mongoose.Schema({
 });
 
 const ProductSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  price: Number,
+  title: {
+    type: String,
+    required: true,
+    minLength: 5,
+  },
+  description: {
+    type: String,
+    validate: {
+      validator: (value) => {
+        //Suppose description cannot contain the word "hello"
+        return !value.includes("hello");
+      },
+      message: "Description cannot contain the world 'hello'",
+    },
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: [0, "Price must be a positive number"],
+  },
   stock: Number,
   reviews: [ReviewSchema],
 });
