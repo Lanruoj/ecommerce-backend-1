@@ -1,26 +1,5 @@
 const Product = require("../../models/product");
 
-const products = [
-  {
-    title: "Bag",
-    description: "Bag for all occasions",
-    price: 42,
-    stock: 10,
-  },
-  {
-    title: "Ring",
-    description: "Wedding Ring",
-    price: 4200,
-    stock: 5,
-  },
-  {
-    title: "Wallet",
-    description: "Wallet for all occasions",
-    price: 420,
-    stock: 15,
-  },
-];
-
 async function getProducts() {
   //get the products from the database
   const products = await Product.find();
@@ -43,8 +22,15 @@ async function createProduct(product) {
   return newProduct;
 }
 
+async function deleteProduct(productId) {
+  // deleteOne and deleteMany will delete but not return the records
+  const deletedProduct = await Product.findByIdAndDelete(productId);
+  return deletedProduct;
+}
+
 module.exports = {
   getProducts,
   getProductById,
   createProduct,
+  deleteProduct,
 };
