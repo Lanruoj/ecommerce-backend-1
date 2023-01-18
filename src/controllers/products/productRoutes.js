@@ -4,7 +4,10 @@ const {
   getProducts,
   getProductById,
   createProduct,
+  deleteProduct,
 } = require("./productControllers");
+
+const auth = require("../../middleware/auth");
 
 const productRouter = express.Router();
 
@@ -23,13 +26,18 @@ productRouter.get("/:productId", async (request, response) => {
   response.json(product);
 });
 
-productRouter.post("/", async (request, response) => {
+productRouter.post("/", auth, async (request, response) => {
   const product = await createProduct({
     title: request.body.title,
     description: request.body.description,
     price: request.body.price,
     stock: request.body.stock,
   });
+  return response.json(product);
+});
+
+productRouter.delete("/:productId", async (request, response) => {
+  const product = await deleteProduct(request.params.productId);
   response.json(product);
 });
 
