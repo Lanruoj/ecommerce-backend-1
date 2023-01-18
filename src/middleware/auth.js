@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 function auth(request, response, next) {
   // Get the token from the authorization header
-  // bearer token format: `Bearer`
+  // bearer token format: `Bearer token`
   let token = request.get("authorization");
   token = token?.split(" ")?.[1];
   // Check if token exists
@@ -12,7 +12,7 @@ function auth(request, response, next) {
   // Verify the token using the secret key
   try {
     const payload = jwt.verify(token, "secret");
-    request.userId = payload.id;
+    request.payload = payload;
     next();
   } catch (err) {
     console.log(err);
